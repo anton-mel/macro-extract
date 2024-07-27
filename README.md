@@ -34,7 +34,7 @@ fn standalone_function {
    allow: dead_code
 }
 
-impl my_method {
+fn my_method {
    allow: deprecated, dead_code
    deny: warnings
 }
