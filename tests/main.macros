@@ -1,0 +1,13 @@
+fn standalone_function {
+   allow: dead_code
+}
+
+impl my_method {
+   allow: deprecated, dead_code
+   deny: warnings
+}
+
+struct MyStruct {
+   allow: dead_code
+}
+
