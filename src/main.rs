@@ -6,6 +6,14 @@ use syn::visit::{self, Visit};
 use syn::__private::ToTokens;
 use std::collections::HashMap;
 
+// Questions to Clarify
+// 1. What should we do with GLOBAL proc-macros?
+// 2. How do we approach static-assertions?
+// 3. What are the purspose of the verfication tool?
+// 4. Approaches: Use Rustc AST parser or
+// customly run line by line and extract-macros.
+// 5. How do we structure fn/structs/mod/impl stc.?
+
 struct MacroExtractor {
     item_macros: HashMap<String, HashMap<String, Vec<String>>>,
     current_item: Option<String>,
@@ -48,15 +56,16 @@ impl<'ast> Visit<'ast> for MacroExtractor {
     }
 
     fn visit_item_impl(&mut self, item: &'ast ItemImpl) {
+        // Process items inside the impl block
         for impl_item in &item.items {
             if let syn::ImplItem::Fn(fn_item) = impl_item {
-                let fn_name = format!("impl {}", fn_item.sig.ident.to_string());
+                let fn_name = format!("fn {}", fn_item.sig.ident.to_string());
                 self.current_item = Some(fn_name.clone());
                 visit::visit_impl_item_fn(self, fn_item);
-                self.current_item = None; // Reset after processing
+                self.current_item = None; // Reset after processing each impl method
             }
         }
-        visit::visit_item_impl(self, item);
+        visit::visit_item_impl(self, item); // Visit the impl block itself if necessary
     }
 }
 
