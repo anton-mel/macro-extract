@@ -1,4 +1,5 @@
 mod skeleton;
+mod compiler;
 mod watcher;
 
 fn main() -> notify::Result<()> {

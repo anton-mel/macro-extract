@@ -1,36 +1,6 @@
-mod inner_module {
-    struct InnerStruct {
-    }
-    impl InnerStruct {
-        fn new {
-        }
-        fn method_b {
-        }
-    }
+pub struct Data {}
+impl Data {
+    fn new(values: &str) {}
+    fn print_values(&self) {}
 }
-struct InnerStruct {
-}
-impl InnerStruct {
-    fn new {
-    }
-    fn method_b {
-    }
-}
-struct OuterStruct {
-}
-impl OuterStruct {
-    fn new {
-    }
-    fn method_a {
-    }
-}
-impl OuterStruct {
-    fn trait_method {
-    }
-}
-impl InnerStruct {
-    fn trait_method {
-    }
-}
-fn main {
-}
+fn main() {}

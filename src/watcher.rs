@@ -4,8 +4,12 @@
 
 use notify::{Config, Event, RecommendedWatcher, RecursiveMode, Watcher};
 use std::{fs, path::{Path, PathBuf}, sync::mpsc};
-// use crate::skeleton::create_skeleton;
+use crate::skeleton::create_skeleton;
+use crate::compiler::process_files;
 
+
+static PATH: &str = "tests";
+static MACROS_FOLDER: &str = "macros";
 
 fn get_macros_path(src_path: &Path) -> PathBuf {
     // Replace ".rs" extension with ".macros"
@@ -25,14 +29,16 @@ fn handle_changes(event: Event) {
                     println!("DEBUG: File created: {:?}", path);
                     if !macros_path.exists() {
                         fs::File::create(macros_path).expect("Failed to create file");
-                        // create_skeleton(path);  // Call skeleton.rs to generate the skeleton
                     }
                 }
                 notify::event::EventKind::Modify(_) => {
                     println!("DEBUG: File modified: {:?}", path);
                     if !macros_path.exists() {
                         fs::File::create(macros_path).expect("Failed to create file");
-                        // create_skeleton(path);  // Call skeleton.rs to generate the skeleton
+                        create_skeleton(path);
+                    } else {
+                        let macros_folder = Path::new(MACROS_FOLDER);
+                        process_files(path, &macros_path, macros_folder);
                     }
                 }
                 notify::event::EventKind::Remove(_) => {
@@ -64,7 +70,7 @@ pub fn start_watching() -> notify::Result<()> {
     )?;
 
     // Watch the src directory recursively
-    watcher.watch(Path::new("src"), RecursiveMode::Recursive)?;
+    watcher.watch(Path::new(PATH), RecursiveMode::Recursive)?;
 
     // Handle events
     for event in rx {
