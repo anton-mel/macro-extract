@@ -1,5 +1,6 @@
 pub struct Data {}
 impl Data {
+    #[consumes("u8")]
     fn new(values: &str) {}
     fn print_values(&self) {}
 }

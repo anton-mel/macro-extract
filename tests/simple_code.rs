@@ -15,11 +15,6 @@ impl Data {
 }
 
 fn main() {
-    let data = Data::new("Hello, World!");
-    
-    fn function_name () {
-
-    }
-    
+    let data = Data::new("Hello, World!");  
     data.print_values();
 }
