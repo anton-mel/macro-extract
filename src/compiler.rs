@@ -1,6 +1,12 @@
 #![allow(dead_code)]
 #![allow(unreachable_code)]
 
+// Extracting macros to a non-Rust type-written code is challenging because
+// it requires either modifying the Rustc compiler or building your own compiler. 
+// The issue is how to map the macros defined externally to the source code. 
+// This needs to be detailed, and my compiler must understand how to map them.
+// The easiest way would be just extracting them akin to the `main` branch.
+
 use std::{collections::HashMap, path::Path};
 use syn::{parse_file, Item, ItemFn};
 use proc_macro2::TokenStream;
