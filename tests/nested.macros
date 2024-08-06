@@ -1,0 +1,8 @@
+fn inner_function {
+   allow: dead_code
+}
+
+fn outer_function {
+   deny: warnings
+}
+

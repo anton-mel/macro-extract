@@ -1,0 +1,7 @@
+struct ComplexStruct {
+   deny: warnings
+   cfg: feature = "experimental"
+   derive: Debug ,Clone
+   allow: dead_code, non_snake_case ,unused_imports, unused, dead_code
+}
+

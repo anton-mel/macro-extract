@@ -1,13 +1,12 @@
 use notify::{Config, Event, RecommendedWatcher, RecursiveMode, Watcher};
 use std::{fs, path::{Path, PathBuf}, sync::mpsc};
-use syn::{parse_file, Attribute, ItemFn, ItemStruct, ItemImpl};
+use syn::{parse_file, Attribute, ItemFn, ItemStruct, ItemImpl, ItemEnum, Variant};
 use std::collections::HashMap;
 use syn::visit::{self, Visit};
 use syn::__private::ToTokens;
 use std::io::Write;
 
 static PATH: &str = "tests";
-static MACROS_FOLDER: &str = "macros";
 
 fn get_macros_path(src_path: &Path) -> PathBuf {
     src_path.with_extension("macros")
@@ -20,17 +19,17 @@ fn handle_changes(event: Event) {
             let macros_path = get_macros_path(path);
             match event.kind {
                 notify::event::EventKind::Create(_) => {
-                    println!("DEBUG: File created: {:?}", path);
+                    // println!("DEBUG: File created: {:?}", path);
                     if !macros_path.exists() {
                         fs::File::create(macros_path).expect("Failed to create file");
                     }
                 }
                 notify::event::EventKind::Modify(_) => {
-                    println!("DEBUG: File modified: {:?}", path);
+                    // println!("DEBUG: File modified: {:?}", path);
                     compile_macros(&path, &macros_path);
                 }
                 notify::event::EventKind::Remove(_) => {
-                    println!("DEBUG: File removed: {:?}", path);
+                    // println!("DEBUG: File removed: {:?}", path);
                     if macros_path.exists() {
                         fs::remove_file(macros_path).expect("Failed to remove file");
                     }
@@ -114,6 +113,20 @@ impl<'ast> Visit<'ast> for MacroExtractor {
             }
         }
         visit::visit_item_impl(self, item);
+    }
+
+    fn visit_item_enum(&mut self, item: &'ast ItemEnum) {
+        let enum_name = format!("enum {}", item.ident);
+        self.current_item = Some(enum_name.clone());
+        visit::visit_item_enum(self, item);
+        self.current_item = None;
+    }
+
+    fn visit_variant(&mut self, var: &'ast Variant) {
+        let variant_name = format!("variant {}", var.ident);
+        self.current_item = Some(variant_name.clone());
+        visit::visit_variant(self, var);
+        self.current_item = None;
     }
 }
 

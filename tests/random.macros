@@ -1,0 +1,43 @@
+fn _another_method {
+   allow: unused_variables, unused_assignments
+}
+
+struct TestStruct {
+   cfg: test
+   allow: dead_code
+}
+
+fn add {
+   allow: clippy :: ptr_arg
+}
+
+fn _standalone_function {
+   warn: unreachable_code
+   deny: warnings
+}
+
+struct MyStruct {
+   allow: dead_code, non_snake_case, unused
+   derive: Debug
+}
+
+fn my_method {
+   deprecated: [deprecated]
+   deny: warnings
+   allow: dead_code
+}
+
+fn fmt {
+   allow: unused_variables
+}
+
+fn _test_method {
+   cfg: test
+   allow: unused_variables
+}
+
+fn another_function {
+   allow: dead_code
+   deny: missing_docs
+}
+

@@ -1,0 +1,13 @@
+variant Variant1 {
+   allow: dead_code
+}
+
+enum ComplexEnum {
+   allow: dead_code, non_camel_case_types
+   derive: Debug
+}
+
+variant Variant2 {
+   deny: warnings
+}
+
