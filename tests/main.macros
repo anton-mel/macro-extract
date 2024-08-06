@@ -1,13 +1,43 @@
-fn standalone_function {
-   allow: dead_code
+fn another_function {
+   deny: missing_docs // ok
+   allow: dead_code // ok
 }
 
-impl my_method {
-   allow: deprecated, dead_code
-   deny: warnings
+fn my_method {
+   deprecated: [deprecated] //ok
+   deny: warnings // ok
+   allow: dead_code // ok
+}
+
+fn fmt {
+   allow: unused_variables // ok
+}
+
+struct TestStruct {
+   cfg: test // ok
+   allow: dead_code // ok
+}
+
+fn test_method {
+   cfg: test // ok
+   allow: unused_variables // ok
+}
+
+fn another_method {
+   allow: unused_variables, unused_assignments // ok
+}
+
+fn standalone_function {
+   deny: warnings // ok
+   warn: unreachable_code // ok
+}
+
+fn add {
+   allow: clippy :: ptr_arg // ok
 }
 
 struct MyStruct {
-   allow: dead_code
+   allow: dead_code, non_snake_case, unused // ok
+   derive: Debug // ok
 }
 

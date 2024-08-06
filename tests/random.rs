@@ -22,7 +22,7 @@ impl MyStruct {
 // Another implementation block for MyStruct with different attributes
 impl MyStruct {
     #[allow(unused_variables)] // Custom attribute
-    fn another_method(&self) {
+    fn _another_method(&self) {
         let x = 42;
         #[allow(unused_assignments)] // Custom attribute
         let y = 0;
@@ -33,7 +33,7 @@ impl MyStruct {
 // A function with various attributes
 #[deny(warnings)] // Custom attribute
 #[warn(unreachable_code)] // Custom attribute
-fn standalone_function() {
+fn _standalone_function() {
     // function implementation
 }
 
@@ -47,7 +47,7 @@ struct TestStruct {
 impl TestStruct {
     #[cfg(test)] // Conditional compilation attribute
     #[allow(unused_variables)] // Custom attribute
-    fn test_method(&self) {
+    fn _test_method(&self) {
         let temp = 0;
         // method implementation
     }

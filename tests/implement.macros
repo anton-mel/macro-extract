@@ -1,0 +1,5 @@
+fn method1 {
+   deny: warnings
+   deprecated: [deprecated]
+   allow: dead_code
+}

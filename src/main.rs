@@ -6,13 +6,6 @@ use syn::visit::{self, Visit};
 use syn::__private::ToTokens;
 use std::collections::HashMap;
 
-// Questions to Clarify
-// 1. What should we do with GLOBAL proc-macros?
-// 2. How do we approach static-assertions?
-// 3. What are the purspose of the verfication tool?
-// 4. Approaches: Use Rustc AST parser or
-// customly run line by line and extract-macros.
-// 5. How do we structure fn/structs/mod/impl stc.?
 
 struct MacroExtractor {
     item_macros: HashMap<String, HashMap<String, Vec<String>>>,
