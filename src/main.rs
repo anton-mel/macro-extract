@@ -1,11 +1,9 @@
-use std::fs::File;
-use std::path::Path;
-use std::io::prelude::*;
-use syn::{parse_file, Attribute, ItemFn, ItemStruct, ItemImpl};
+mod watcher;
+
+use syn::{Attribute, ItemFn, ItemStruct, ItemImpl};
 use syn::visit::{self, Visit};
 use syn::__private::ToTokens;
 use std::collections::HashMap;
-
 
 struct MacroExtractor {
     item_macros: HashMap<String, HashMap<String, Vec<String>>>,
@@ -70,31 +68,7 @@ fn trim_macro_contents(macro_str: &str) -> String {
 }
 
 fn main() -> std::io::Result<()> {
-    let input_path = std::env::args().nth(1).expect("No input file path provided");
-    let input_file = std::fs::read_to_string(&input_path).expect("Failed to read input file");
-
-    // Parse the input file into a syntax tree
-    let ast = parse_file(&input_file).expect("Failed to parse file");
-
-    // Collect attributes
-    let mut extractor = MacroExtractor { 
-        item_macros: HashMap::new(), 
-        current_item: None 
-    };
-    extractor.visit_file(&ast);
-
-    // Write the extracted macros to a file
-    let output_path = Path::new(&input_path).with_extension("macros");
-    let mut output_file = File::create(output_path)?;
-
-    for (item_name, macros) in extractor.item_macros {
-        writeln!(output_file, "{} {{", item_name)?;
-        for (macro_name, attrs) in macros {
-            let attr_list = attrs.join(", ");
-            writeln!(output_file, "   {}: {}", macro_name, attr_list)?;
-        }
-        writeln!(output_file, "}}\n")?;
-    }
-
+    watcher::start_watching()?;
     Ok(())
 }
+

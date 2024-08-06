@@ -7,3 +7,4 @@ edition = "2021"
 syn = { version = "2.0", features = ["full", "visit"] }
 proc-macro2 = "1.0.86"
 quote = "1.0.36"
+notify = "6.1.1"
